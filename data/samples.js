@@ -1,0 +1,209 @@
+window.DEMO_DATA = {
+ "systems": [
+  {
+   "key": "mixture",
+   "label": "Mixture",
+   "sub": "model input",
+   "kind": "input"
+  },
+  {
+   "key": "gt",
+   "label": "Target stem",
+   "sub": "ground truth",
+   "kind": "gt"
+  },
+  {
+   "key": "foley_omni",
+   "label": "Foley-Omni",
+   "sub": "baseline, no fine-tuning",
+   "kind": "gen"
+  },
+  {
+   "key": "selva",
+   "label": "SelVA",
+   "sub": "baseline, no fine-tuning",
+   "kind": "gen"
+  },
+  {
+   "key": "stage1",
+   "label": "Stage 1 only",
+   "sub": "separation",
+   "kind": "sep"
+  },
+  {
+   "key": "stage2",
+   "label": "Stage 2 only",
+   "sub": "2k steps, no stage-1 init",
+   "kind": "gen"
+  },
+  {
+   "key": "ours",
+   "label": "Ours",
+   "sub": "stage 1 2k → stage 2 1k",
+   "kind": "gen",
+   "highlight": true
+  }
+ ],
+ "samples": [
+  {
+   "id": "fb_521_stem_01",
+   "clip": "fb_521",
+   "prompt": "Golf swing and impact",
+   "role": "onset or span",
+   "duration": 9.04,
+   "clips": {
+    "mixture": "media/clips/mixture/fb_521_stem_01.mp4",
+    "gt": "media/clips/gt/fb_521_stem_01.mp4",
+    "foley_omni": "media/clips/foley_omni/fb_521_stem_01.mp4",
+    "selva": "media/clips/selva/fb_521_stem_01.mp4",
+    "stage1": "media/clips/stage1/fb_521_stem_01.mp4",
+    "stage2": "media/clips/stage2/fb_521_stem_01.mp4",
+    "ours": "media/clips/ours/fb_521_stem_01.mp4"
+   }
+  },
+  {
+   "id": "fb_521_stem_02",
+   "clip": "fb_521",
+   "prompt": "Outdoor ambience",
+   "role": "ambience",
+   "duration": 9.04,
+   "clips": {
+    "mixture": "media/clips/mixture/fb_521_stem_02.mp4",
+    "gt": "media/clips/gt/fb_521_stem_02.mp4",
+    "foley_omni": "media/clips/foley_omni/fb_521_stem_02.mp4",
+    "selva": "media/clips/selva/fb_521_stem_02.mp4",
+    "stage1": "media/clips/stage1/fb_521_stem_02.mp4",
+    "stage2": "media/clips/stage2/fb_521_stem_02.mp4",
+    "ours": "media/clips/ours/fb_521_stem_02.mp4"
+   }
+  },
+  {
+   "id": "fb_01205_stem_01",
+   "clip": "fb_01205",
+   "prompt": "grill fire crackling and sizzling",
+   "role": "ambience",
+   "duration": 10.04,
+   "clips": {
+    "mixture": "media/clips/mixture/fb_01205_stem_01.mp4",
+    "gt": "media/clips/gt/fb_01205_stem_01.mp4",
+    "foley_omni": "media/clips/foley_omni/fb_01205_stem_01.mp4",
+    "selva": "media/clips/selva/fb_01205_stem_01.mp4",
+    "stage1": "media/clips/stage1/fb_01205_stem_01.mp4",
+    "stage2": "media/clips/stage2/fb_01205_stem_01.mp4",
+    "ours": "media/clips/ours/fb_01205_stem_01.mp4"
+   }
+  },
+  {
+   "id": "fb_01205_stem_02",
+   "clip": "fb_01205",
+   "prompt": "metal tongs clinking on the grill",
+   "role": "onset or span",
+   "duration": 10.04,
+   "clips": {
+    "mixture": "media/clips/mixture/fb_01205_stem_02.mp4",
+    "gt": "media/clips/gt/fb_01205_stem_02.mp4",
+    "foley_omni": "media/clips/foley_omni/fb_01205_stem_02.mp4",
+    "selva": "media/clips/selva/fb_01205_stem_02.mp4",
+    "stage1": "media/clips/stage1/fb_01205_stem_02.mp4",
+    "stage2": "media/clips/stage2/fb_01205_stem_02.mp4",
+    "ours": "media/clips/ours/fb_01205_stem_02.mp4"
+   }
+  },
+  {
+   "id": "fb_2892_stem_01",
+   "clip": "fb_2892",
+   "prompt": "Dry leaves rustling",
+   "role": "onset or span",
+   "duration": 10.04,
+   "clips": {
+    "mixture": "media/clips/mixture/fb_2892_stem_01.mp4",
+    "gt": "media/clips/gt/fb_2892_stem_01.mp4",
+    "foley_omni": "media/clips/foley_omni/fb_2892_stem_01.mp4",
+    "selva": "media/clips/selva/fb_2892_stem_01.mp4",
+    "stage1": "media/clips/stage1/fb_2892_stem_01.mp4",
+    "stage2": "media/clips/stage2/fb_2892_stem_01.mp4",
+    "ours": "media/clips/ours/fb_2892_stem_01.mp4"
+   }
+  },
+  {
+   "id": "fb_2892_stem_02",
+   "clip": "fb_2892",
+   "prompt": "Metal detector beeps",
+   "role": "onset or span",
+   "duration": 10.04,
+   "clips": {
+    "mixture": "media/clips/mixture/fb_2892_stem_02.mp4",
+    "gt": "media/clips/gt/fb_2892_stem_02.mp4",
+    "foley_omni": "media/clips/foley_omni/fb_2892_stem_02.mp4",
+    "selva": "media/clips/selva/fb_2892_stem_02.mp4",
+    "stage1": "media/clips/stage1/fb_2892_stem_02.mp4",
+    "stage2": "media/clips/stage2/fb_2892_stem_02.mp4",
+    "ours": "media/clips/ours/fb_2892_stem_02.mp4"
+   }
+  },
+  {
+   "id": "fb_2653_stem_01",
+   "clip": "fb_2653",
+   "prompt": "stadium crowd",
+   "role": "ambience",
+   "duration": 10.04,
+   "clips": {
+    "mixture": "media/clips/mixture/fb_2653_stem_01.mp4",
+    "gt": "media/clips/gt/fb_2653_stem_01.mp4",
+    "foley_omni": "media/clips/foley_omni/fb_2653_stem_01.mp4",
+    "selva": "media/clips/selva/fb_2653_stem_01.mp4",
+    "stage1": "media/clips/stage1/fb_2653_stem_01.mp4",
+    "stage2": "media/clips/stage2/fb_2653_stem_01.mp4",
+    "ours": "media/clips/ours/fb_2653_stem_01.mp4"
+   }
+  },
+  {
+   "id": "fb_2653_stem_02_attempt02",
+   "clip": "fb_2653",
+   "prompt": "soccer ball kicks",
+   "role": "onset or span",
+   "duration": 10.04,
+   "clips": {
+    "mixture": "media/clips/mixture/fb_2653_stem_02_attempt02.mp4",
+    "gt": "media/clips/gt/fb_2653_stem_02_attempt02.mp4",
+    "foley_omni": "media/clips/foley_omni/fb_2653_stem_02_attempt02.mp4",
+    "selva": "media/clips/selva/fb_2653_stem_02_attempt02.mp4",
+    "stage1": "media/clips/stage1/fb_2653_stem_02_attempt02.mp4",
+    "stage2": "media/clips/stage2/fb_2653_stem_02_attempt02.mp4",
+    "ours": "media/clips/ours/fb_2653_stem_02_attempt02.mp4"
+   }
+  },
+  {
+   "id": "fb_00753_stem_01",
+   "clip": "fb_00753",
+   "prompt": "electromagnet buzzing while energized",
+   "role": "onset or span",
+   "duration": 10.04,
+   "clips": {
+    "mixture": "media/clips/mixture/fb_00753_stem_01.mp4",
+    "gt": "media/clips/gt/fb_00753_stem_01.mp4",
+    "foley_omni": "media/clips/foley_omni/fb_00753_stem_01.mp4",
+    "selva": "media/clips/selva/fb_00753_stem_01.mp4",
+    "stage1": "media/clips/stage1/fb_00753_stem_01.mp4",
+    "stage2": "media/clips/stage2/fb_00753_stem_01.mp4",
+    "ours": "media/clips/ours/fb_00753_stem_01.mp4"
+   }
+  },
+  {
+   "id": "fb_00753_stem_02",
+   "clip": "fb_00753",
+   "prompt": "desk telephone ringing",
+   "role": "onset or span",
+   "duration": 10.04,
+   "clips": {
+    "mixture": "media/clips/mixture/fb_00753_stem_02.mp4",
+    "gt": "media/clips/gt/fb_00753_stem_02.mp4",
+    "foley_omni": "media/clips/foley_omni/fb_00753_stem_02.mp4",
+    "selva": "media/clips/selva/fb_00753_stem_02.mp4",
+    "stage1": "media/clips/stage1/fb_00753_stem_02.mp4",
+    "stage2": "media/clips/stage2/fb_00753_stem_02.mp4",
+    "ours": "media/clips/ours/fb_00753_stem_02.mp4"
+   }
+  }
+ ]
+};

@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Keep the Silences — Demo</title>
+<meta name="description" content="Audio samples for selective video-to-audio generation: one video, several sound sources, only the one named in the text prompt.">
+<style>
+:root{
+  --bg:#fbfbfa; --panel:#fff; --ink:#16181d; --muted:#666e7a; --line:#e3e5e8;
+  --accent:#3b5bdb; --accent-soft:#eef1fe; --warn:#8a5a00; --warn-soft:#fdf5e3;
+  --gt:#1a7f5a; --gt-soft:#e9f6f0;
+  --radius:12px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#131416; --panel:#191b1f; --ink:#e9eaec; --muted:#9aa1ab; --line:#2b2e34;
+    --accent:#94a9ff; --accent-soft:#1d2440; --warn:#e0b25e; --warn-soft:#2c2415;
+    --gt:#6bd3a8; --gt-soft:#15291f;
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans KR",sans-serif;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+.wrap{max-width:1120px; margin:0 auto; padding:0 20px}
+a{color:var(--accent)}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.9em}
+h1,h2,h3{line-height:1.25; margin:0}
+section{padding:48px 0; border-top:1px solid var(--line)}
+section > .wrap > h2{font-size:13px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-bottom:20px}
+
+/* ---- hero ---- */
+header.hero{padding:84px 0 64px; text-align:center}
+.eyebrow{
+  display:inline-block; margin-bottom:22px; padding:6px 16px; border-radius:999px;
+  background:var(--accent-soft); color:var(--accent);
+  font-size:12.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+}
+header.hero h1{font-size:clamp(30px,5.4vw,52px); letter-spacing:-.025em; font-weight:700}
+header.hero h1 .h1-sub{font-weight:600; color:var(--muted)}
+.authors{margin-top:32px; font-size:clamp(16px,2.1vw,19px); font-weight:500; line-height:1.5}
+.affil{color:var(--muted); font-size:15px; margin-top:8px}
+.affil.fine{font-size:13px; margin-top:6px}
+
+
+/* ---- systems table ---- */
+.tablescroll{overflow-x:auto; -webkit-overflow-scrolling:touch}
+table{border-collapse:collapse; width:100%; font-size:14px; min-width:560px}
+th,td{text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-weight:600; color:var(--muted); font-size:12px; letter-spacing:.05em; text-transform:uppercase}
+tr.is-ours{background:var(--accent-soft)}
+tr.is-ours td:first-child{font-weight:650}
+tr.is-ref td{color:var(--muted)}
+.badge{
+  display:inline-block; padding:1px 7px; border-radius:999px; font-size:11px;
+  font-weight:600; letter-spacing:.02em; white-space:nowrap;
+}
+.badge.sep{background:var(--warn-soft); color:var(--warn)}
+.badge.gt{background:var(--gt-soft); color:var(--gt)}
+.badge.role{background:var(--panel); color:var(--muted); border:1px solid var(--line)}
+.badge.role.amb{background:var(--warn-soft); color:var(--warn); border-color:transparent}
+.note{font-size:13px; color:var(--muted); margin-top:16px}
+.note ul{margin:6px 0 0; padding-left:18px}
+.note li{margin:3px 0}
+
+/* ---- samples ---- */
+.stem{margin-bottom:34px}
+.stemhead{
+  display:flex; gap:10px; align-items:baseline; flex-wrap:wrap;
+  padding-bottom:10px; margin-bottom:16px; border-bottom:1px solid var(--line);
+}
+.stemhead .prompt{font-size:19px; font-weight:650; letter-spacing:-.015em}
+.stemhead .idx{
+  font-size:12px; font-weight:700; color:var(--muted);
+  font-variant-numeric:tabular-nums; letter-spacing:.06em;
+}
+.stemhead .plabel{
+  font-size:11px; font-weight:700; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--muted); border:1px solid var(--line); border-radius:5px; padding:2px 7px;
+}
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(228px,1fr)); gap:14px}
+.tile{margin:0; min-width:0}
+.tile video{
+  width:100%; height:auto; aspect-ratio:16/9; display:block;
+  border-radius:9px; background:#000; border:1px solid var(--line);
+}
+.tile figcaption{
+  margin-top:7px; display:flex; gap:6px; align-items:baseline; flex-wrap:wrap;
+  font-size:13.5px; font-weight:600;
+}
+.tile figcaption small{
+  flex-basis:100%; font-weight:400; color:var(--muted); font-size:12px; line-height:1.4;
+}
+.tile.ref figcaption{color:var(--muted)}
+.tile.ours figcaption{color:var(--accent); font-weight:700}
+.tile.ours video{border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-soft)}
+
+footer{padding:48px 0 72px; color:var(--muted); font-size:13px; border-top:1px solid var(--line)}
+pre.bib{
+  background:var(--panel); border:1px solid var(--line); border-radius:8px;
+  padding:14px; overflow-x:auto; font-size:12.5px; line-height:1.5; color:var(--ink);
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Demo page · audio samples</div>
+    <h1>Keep the Silences:<br><span class="h1-sub">Source Isolation for Selective Video-to-Audio Generation</span></h1>
+    <div class="authors">
+      Insung Lee<sup>*</sup>, Haejun Yoo<sup>*</sup>, Gwangwoong Park,
+      Du-Seong Chang<sup>&dagger;</sup>, Myoung-Wan Koo<sup>&dagger;</sup>
+    </div>
+    <div class="affil">Department of Artificial Intelligence, Sogang University, South Korea</div>
+    <div class="affil fine"><sup>*</sup>Equal contribution &nbsp;·&nbsp; <sup>&dagger;</sup>Corresponding authors</div>
+  </div>
+</header>
+
+<section id="systems">
+  <div class="wrap">
+    <h2>Systems compared</h2>
+    <div class="tablescroll">
+      <table>
+        <thead>
+          <tr><th style="width:210px">Row on this page</th><th>What it is</th><th style="width:150px">Inputs</th></tr>
+        </thead>
+        <tbody>
+          <tr class="is-ref">
+            <td>Mixture</td>
+            <td>The clip's full soundtrack — what the model is asked to pull one track out of.</td>
+            <td>—</td>
+          </tr>
+          <tr class="is-ref">
+            <td>Target stem <span class="badge gt">ground truth</span></td>
+            <td>The annotated stem for this prompt. The target, not a system.</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>Foley-Omni</td>
+            <td>The released Foley-Omni checkpoint, no fine-tuning on our data.</td>
+            <td>video + text</td>
+          </tr>
+          <tr>
+            <td>SelVA</td>
+            <td>The released SelVA checkpoint, no fine-tuning on our data.</td>
+            <td>video + text</td>
+          </tr>
+          <tr>
+            <td>Stage 1 only <span class="badge sep">separation</span></td>
+            <td>Separation stage used on its own, 2k steps. Handed the mixture at inference.</td>
+            <td>video + text + <strong>mixture audio</strong></td>
+          </tr>
+          <tr>
+            <td>Stage 2 only</td>
+            <td>Generation stage trained directly from the released checkpoint for 2k steps, skipping stage 1.</td>
+            <td>video + text</td>
+          </tr>
+          <tr class="is-ours">
+            <td>Ours</td>
+            <td>Stage 1 for 2k steps, then 1k steps of the generation stage initialised from those weights. This is the configuration the paper reports.</td>
+            <td>video + text</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="samples">
+  <div class="wrap">
+    <h2>Samples</h2>
+    <p class="note" style="margin:0 0 24px; max-width:720px">
+      Ten targets from five test clips. Each row is one text prompt, and each tile below it
+      plays that clip's video with one system's audio on it. Starting a tile stops the others.
+    </p>
+    <div id="samples-root"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <h2 style="font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:12px">BibTeX</h2>
+<pre class="bib">@inproceedings{TODO,
+  title     = {TODO},
+  author    = {TODO},
+  booktitle = {TODO},
+  year      = {2026}
+}</pre>
+  </div>
+</footer>
+
+<script src="data/samples.js"></script>
+<script>
+(function () {
+  var data = window.DEMO_DATA;
+  var root = document.getElementById('samples-root');
+  if (!data || !root) {
+    if (root) root.textContent = 'Sample data failed to load. Run tools/build_demo_site.py.';
+    return;
+  }
+
+  var el = function (tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  };
+
+  data.samples.forEach(function (s, si) {
+    var stem = el('section', 'stem');
+
+    var head = el('div', 'stemhead');
+    head.appendChild(el('span', 'idx', String(si + 1).padStart(2, '0')));
+    head.appendChild(el('span', 'plabel', 'Text prompt'));
+    head.appendChild(el('span', 'prompt', '\u201c' + s.prompt + '\u201d'));
+    if (s.role) {
+      var rb = el('span', 'badge role', s.role);
+      if (s.role === 'ambience') rb.classList.add('amb');
+      head.appendChild(rb);
+    }
+    stem.appendChild(head);
+
+    var grid = el('div', 'grid');
+    data.systems.forEach(function (sys) {
+      var tile = el('figure', 'tile');
+      if (sys.kind === 'input' || sys.kind === 'gt') tile.classList.add('ref');
+      if (sys.highlight) tile.classList.add('ours');
+
+      var v = document.createElement('video');
+      v.src = s.clips[sys.key];
+      v.controls = true;
+      v.playsInline = true;
+      v.preload = 'metadata';
+      v.setAttribute('aria-label', sys.label + ' — ' + s.prompt);
+      tile.appendChild(v);
+
+      var cap = el('figcaption');
+      cap.appendChild(document.createTextNode(sys.label));
+      if (sys.kind === 'sep') cap.appendChild(el('span', 'badge sep', 'gets mixture'));
+      if (sys.kind === 'gt') cap.appendChild(el('span', 'badge gt', 'target'));
+      if (sys.sub) cap.appendChild(el('small', null, sys.sub));
+      tile.appendChild(cap);
+
+      grid.appendChild(tile);
+    });
+
+    stem.appendChild(grid);
+    root.appendChild(stem);
+  });
+
+  // One at a time, so switching between systems is a single click.
+  var players = Array.prototype.slice.call(root.querySelectorAll('video'));
+  players.forEach(function (v) {
+    v.addEventListener('play', function () {
+      players.forEach(function (o) { if (o !== v && !o.paused) o.pause(); });
+    });
+  });
+})();
+</script>
+</body>
+</html>
