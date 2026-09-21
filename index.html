@@ -64,7 +64,20 @@ tr.is-ref td{color:var(--muted)}
 .badge.sep{background:var(--warn-soft); color:var(--warn)}
 .badge.gt{background:var(--gt-soft); color:var(--gt)}
 .badge.role{background:var(--panel); color:var(--muted); border:1px solid var(--line)}
-.badge.role.amb{background:var(--warn-soft); color:var(--warn); border-color:transparent}
+.badge.role.hard{background:var(--warn-soft); color:var(--warn); border-color:transparent}
+
+/* ---- what to listen for ---- */
+.roles{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px; margin-top:18px}
+.role-card{
+  background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+  padding:16px 18px;
+}
+.role-card.hard{border-color:var(--warn); background:var(--warn-soft)}
+.role-card h3{font-size:14px; font-weight:700; margin-bottom:8px; display:flex; gap:8px; align-items:center}
+.role-card p{margin:0; font-size:13.5px; color:var(--muted); line-height:1.55}
+.role-card p + p{margin-top:8px}
+.role-card strong{color:var(--ink); font-weight:650}
+.lede{font-size:15px; max-width:760px; margin:0}
 .note{font-size:13px; color:var(--muted); margin-top:16px}
 .note ul{margin:6px 0 0; padding-left:18px}
 .note li{margin:3px 0}
@@ -84,6 +97,7 @@ tr.is-ref td{color:var(--muted)}
   font-size:11px; font-weight:700; letter-spacing:.09em; text-transform:uppercase;
   color:var(--muted); border:1px solid var(--line); border-radius:5px; padding:2px 7px;
 }
+.note.hint{margin:-8px 0 14px}
 .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(228px,1fr)); gap:14px}
 .tile{margin:0; min-width:0}
 .tile video{
@@ -154,17 +168,17 @@ pre.bib{
           </tr>
           <tr>
             <td>Stage 1 only <span class="badge sep">separation</span></td>
-            <td>Separation stage used on its own, 2k steps. Handed the mixture at inference.</td>
+            <td>Stage 1 (separation) used on its own, 2k steps. Handed the mixture at inference.</td>
             <td>video + text + <strong>mixture audio</strong></td>
           </tr>
           <tr>
             <td>Stage 2 only</td>
-            <td>Generation stage trained directly from the released checkpoint for 2k steps, skipping stage 1.</td>
+            <td>Stage 2 (generation) trained directly from the released checkpoint for 2k steps, skipping stage 1.</td>
             <td>video + text</td>
           </tr>
           <tr class="is-ours">
             <td>Ours</td>
-            <td>Stage 1 for 2k steps, then 1k steps of the generation stage initialised from those weights. This is the configuration the paper reports.</td>
+            <td>Stage 1 (separation) for 2k steps, then stage 2 (generation) for 1k steps, initialised from the stage-1 weights. This is the configuration the paper reports.</td>
             <td>video + text</td>
           </tr>
         </tbody>
@@ -173,12 +187,39 @@ pre.bib{
   </div>
 </section>
 
+<section id="target-types">
+  <div class="wrap">
+    <h2>Target types</h2>
+    <p class="lede">
+      Every prompt on this page names one source inside a clip that has several. The annotation
+      labels each target by when it is active, and each sample below carries its badge.
+    </p>
+    <div class="roles">
+      <div class="role-card hard">
+        <h3><span class="badge role hard">onset or span</span></h3>
+        <p>
+          The target sounds only during part of the clip; the rest of it should be
+          <strong>silence</strong>. Listen to the gaps as well as to the events.
+        </p>
+      </div>
+      <div class="role-card">
+        <h3><span class="badge role">ambience</span></h3>
+        <p>
+          The target sounds throughout the clip, so there is no silence to keep.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="samples">
   <div class="wrap">
     <h2>Samples</h2>
     <p class="note" style="margin:0 0 24px; max-width:720px">
-      Ten targets from five test clips. Each row is one text prompt, and each tile below it
-      plays that clip's video with one system's audio on it. Starting a tile stops the others.
+      Ten targets from five test clips — seven <em>onset or span</em>, three <em>ambience</em>.
+      Each row is one text prompt, and each tile below it plays that clip's video with one
+      system's audio on it. Starting a tile stops the others. Audio is never loudness-normalised:
+      how quiet a system goes is the point.
     </p>
     <div id="samples-root"></div>
   </div>
@@ -220,12 +261,20 @@ pre.bib{
     head.appendChild(el('span', 'idx', String(si + 1).padStart(2, '0')));
     head.appendChild(el('span', 'plabel', 'Text prompt'));
     head.appendChild(el('span', 'prompt', '\u201c' + s.prompt + '\u201d'));
+    var isHard = s.role && s.role !== 'ambience';
     if (s.role) {
       var rb = el('span', 'badge role', s.role);
-      if (s.role === 'ambience') rb.classList.add('amb');
+      if (isHard) rb.classList.add('hard');
       head.appendChild(rb);
     }
     stem.appendChild(head);
+
+    if (s.role) {
+      var hint = el('p', 'note hint', isHard
+        ? 'The target is silent for part of this clip — listen to the gaps as well as to the events.'
+        : 'The target sounds throughout this clip — no silence to keep.');
+      stem.appendChild(hint);
+    }
 
     var grid = el('div', 'grid');
     data.systems.forEach(function (sys) {
